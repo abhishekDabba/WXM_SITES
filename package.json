@@ -1,0 +1,17 @@
+{
+  "name": "Wifidabba",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./src/css/global.css -o ./src/css/tailwind.css --watch",
+    "sass": "node-sass --output-style compressed ./src/scss/ -o ./src/css/ --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-sass": "^9.0.0"
+  }
+}

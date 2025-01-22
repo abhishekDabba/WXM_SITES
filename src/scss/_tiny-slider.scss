@@ -1,0 +1,343 @@
+// Version: 2.9.4
+
+.tns-outer {
+  padding: 0 !important; // remove padding: clientWidth = width + padding (0) = width
+  [hidden] {
+    display: none !important;
+  }
+  [aria-controls],
+  [data-action] {
+    cursor: pointer;
+  }
+  position: relative;
+  overflow: visible;
+}
+.tns-slider {
+  -webkit-transition: all 0s;
+  -moz-transition: all 0s;
+  transition: all 0s;
+  display: flex;
+  > .tns-item {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+.equal-height {
+  .tns-item {
+    min-height: 100%;
+
+    > div {
+      height: 100%;
+    }
+  }
+}
+
+.slider-overflow-visible {
+  .tns-ovh {
+    overflow: visible;
+  }
+}
+
+.tns-horizontal {
+  &.tns-subpixel {
+    white-space: nowrap;
+    > .tns-item {
+      display: inline-block;
+      vertical-align: middle;
+      white-space: normal;
+    }
+  }
+  &.tns-no-subpixel {
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+    > .tns-item {
+      float: left;
+    }
+  }
+  &.tns-carousel {
+    &.tns-no-subpixel {
+      > .tns-item {
+        margin-right: -100%;
+      }
+    }
+  }
+}
+.tns-no-calc {
+  position: relative;
+  left: 0;
+}
+.tns-gallery {
+  position: relative;
+  left: 0;
+  min-height: 1px; // make sure slider container is visible
+  // overflow: hidden;
+  > .tns-item {
+    position: absolute;
+    left: -100%;
+    -webkit-transition: transform 0s, opacity 0s;
+    -moz-transition: transform 0s, opacity 0s;
+    transition: transform 0s, opacity 0s;
+  }
+  > .tns-slide-active {
+    position: relative;
+    left: auto !important;
+  }
+  > .tns-moving {
+    -webkit-transition: all 0.25s;
+    -moz-transition: all 0.25s;
+    transition: all 0.25s;
+  }
+}
+.tns-autowidth {
+  display: inline-block;
+}
+.tns-lazy-img {
+  -webkit-transition: opacity 0.6s;
+  -moz-transition: opacity 0.6s;
+  transition: opacity 0.6s;
+  opacity: 0.6;
+  &.tns-complete {
+    opacity: 1;
+  }
+}
+.tns-ah {
+  -webkit-transition: height 0s;
+  -moz-transition: height 0s;
+  transition: height 0s;
+}
+.tns-ovh {
+  overflow: hidden;
+}
+.tns-visually-hidden {
+  position: absolute;
+  left: -10000em;
+}
+.tns-transparent {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tns-fadeIn {
+  opacity: 1;
+  filter: alpha(opacity=100);
+  z-index: 0;
+}
+.tns-normal,
+.tns-fadeOut {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  z-index: -1;
+}
+
+// *** Fix a viewport issue in initialization
+.tns-vpfix {
+  white-space: nowrap;
+  > div,
+  > li {
+    display: inline-block;
+  }
+}
+
+// *** Detecting browser capability ***
+$width: 310px;
+$height: 10px;
+$count: 70;
+$perpage: 3;
+
+.tns-t {
+  &-subp2 {
+    margin: 0 auto;
+    width: $width;
+    position: relative;
+    height: $height;
+    overflow: hidden;
+  }
+  &-ct {
+    width: calc(100% * $count / $perpage);
+    width: -webkit-calc(100% * #{$count} / #{$perpage});
+    width: -moz-calc(100% * #{$count} / #{$perpage});
+    width: calc(100% * #{$count} / #{$perpage});
+    position: absolute;
+    right: 0;
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+    > div {
+      width: calc(100% / $count);
+      width: -webkit-calc(100% / #{$count});
+      width: -moz-calc(100% / #{$count});
+      width: calc(100% / #{$count});
+      height: $height;
+      float: left;
+    }
+  }
+}
+
+.tns-controls {
+  @apply flex gap-4 xl:block justify-center pt-10 xl:pt-0;
+  button {
+    @apply flex h-12 w-12 rounded-full shadow-bigShadow bg-white border border-black hover:bg-yellow cursor-pointer items-center justify-center p-0 text-transparent outline-none hover:shadow-none static xl:absolute top-1/2 xl:-translate-y-1/2 leading-[0];
+
+    &:nth-child(1) {
+      @apply xl:-translate-x-full -left-4;
+    }
+    &:nth-child(2) {
+      @apply xl:translate-x-full -right-4;
+    }
+
+    svg {
+      transition: 0.4s ease-out;
+    }
+
+    &:focus {
+      outline: none;
+    }
+    &:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    button {
+      @apply h-12 w-12;
+    }
+  }
+}
+
+.top-controls {
+  .tns-controls {
+    position: absolute;
+    top: -16px;
+    right: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.tns-nav {
+  display: flex;
+  justify-content: flex-end;
+  margin: 40px 0 0;
+  overflow: hidden;
+
+  button {
+    width: 25px;
+    height: 4px;
+    @apply bg-black/10;
+
+    &:first-child {
+      @apply rounded-l-full;
+    }
+    &:last-child {
+      @apply rounded-r-full;
+    }
+  }
+
+  .tns-nav-active {
+    @apply bg-yellow;
+  }
+
+  @media (max-width: 767px) {
+    bottom: -60px;
+    right: 0;
+    left: 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 990px) {
+  .tns-arrows-mobile {
+    .tns-controls {
+      display: flex;
+      justify-content: center;
+      position: static;
+      transform: none;
+      margin: 10px 0 0;
+
+      button {
+        position: relative;
+      }
+    }
+  }
+}
+
+.controls-center {
+  .tns-controls {
+    margin: 32px 0 0;
+    justify-content: center;
+  }
+}
+
+.top-right-controls {
+  .tns-controls {
+    position: absolute;
+    top: -120px;
+    right: 0;
+  }
+}
+
+.wd-slider .tns-nav {
+  button {
+    background-color: #d9d9d9;
+    &.tns-nav-active {
+      background-color: #101828;
+    }
+  }
+}
+.wd-slider.light .tns-nav {
+  button {
+    background-color: rgba(255, 255, 255, 0.2);
+    &.tns-nav-active {
+      background-color: #ffffff;
+    }
+  }
+}
+
+.product-slider .tns-nav {
+  left: 50%;
+  @media (min-width: 768px) {
+    bottom: -100%;
+    transform: translateX(-50%);
+  }
+  right: initial;
+}
+.testimonial-slider .tns-nav {
+  left: 50%;
+  bottom: -34px;
+  transform: translateX(-50%);
+  right: initial;
+}
+
+.black-button-slider {
+  .tns-controls {
+    margin-bottom: 24px;
+    button {
+      width: 40px;
+      height: 40px;
+      border: none;
+      svg {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+      }
+      &:hover {
+        svg path {
+          stroke: white;
+        }
+      }
+    }
+  }
+}
+
+.our-story-slider {
+  .tns-slide-active > div {
+    opacity: 1;
+  }
+}
